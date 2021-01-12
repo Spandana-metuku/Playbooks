@@ -1,0 +1,22 @@
+---
+
+##Demo Ansible Playbook to stop Application Services
+- hosts: linuxserver
+  become: yes
+  tasks:
+     # purpose of this task is to stop application services
+       - name:  verify application processes are stopped
+         shell: scriptFile="/epmcfg/Infra/EpmRestarts/nohup_stopAll_EPM.sh"
+         shell: sudo -u hadmin sh $scriptFile
+    
+     # purpose of this task is to stop database services
+       - name:  verify database  processes are stopped
+         shell: scriptFile="/dba/oracle/admin/Aniruddha/shutdown_script_live.sh"
+         shell: sudo sh $scriptFile
+
+     # purpose of this task to check if application is running or stopped
+       - name:  verify application/database processes are not running
+         shell: if ps -eaf | egrep 'apache|http'|grep -v grep > /dev/null ;then echo 'process_running';else echo 'process_not_running';fi
+         ignore_errors: true
+         register: app_process_check
+...
