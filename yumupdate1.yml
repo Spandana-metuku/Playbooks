@@ -9,17 +9,10 @@
           yum:
               name: '*'
               state: latest
-          register: results1
-        - name: display output of the above yum module
-          debug: 
-            var: results1
+          register: result
+        - debug: 
+              var: result
 # this task is to restart the system
         - name: restart system
           reboot:
-          register: result2
-        - name: display output of the above yum module
-          debug:
-            var: results2
-...
-
 ...
